@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8080:80"
+      - "5000:5000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=nexora_db
+      - DB_USER=root
+      - DB_PASS=nexora_password
+      - FLASK_API_URL=http://127.0.0.1:5000
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: nexora_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: nexora_password
+      MYSQL_DATABASE: nexora_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

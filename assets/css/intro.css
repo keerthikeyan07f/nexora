@@ -1,0 +1,20 @@
+*{box-sizing:border-box;margin:0;padding:0}html,body{width:100%;height:100%}body{font-family:Segoe UI,Arial,sans-serif;background:#020611;color:#fff;overflow:hidden}body:before{content:"";position:fixed;width:650px;height:650px;left:50%;top:45%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#153b7d30,#5422a51b 35%,transparent 70%);filter:blur(10px)}.stars{position:fixed;inset:0;background-image:radial-gradient(#54cfff 1px,transparent 1px),radial-gradient(#9b55ff 1px,transparent 1px);background-size:90px 90px,140px 140px;background-position:20px 30px,70px 90px;opacity:.18}.intro{position:relative;z-index:2;width:90%;max-width:900px;height:100%;margin:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}.logo-wrap{display:flex;align-items:center;gap:18px}.logo{width:78px;height:78px;border-radius:20px;display:grid;place-items:center;font-size:52px;font-weight:900;font-style:italic;background:linear-gradient(135deg,#13d9ff,#774cff 60%,#bd43ff);box-shadow:0 0 45px #5b50ff55}.brand{text-align:left}.brand h1{font-size:52px;letter-spacing:10px;line-height:1;background:linear-gradient(100deg,#20d9ff,#7382ff,#b64cff);color:transparent;background-clip:text}.brand p{font-size:11px;letter-spacing:4px;color:#a6b1c8;margin-top:8px}.line{width:90px;height:2px;margin:36px 0 30px;background:linear-gradient(90deg,#22d7ff,#a347ff);box-shadow:0 0 18px #6550ff}.intro h2{font-size:clamp(30px,5vw,56px);line-height:1.1;letter-spacing:3px}.intro h2 span{background:linear-gradient(90deg,#22d8ff,#a94dff);color:transparent;background-clip:text}.description{max-width:610px;margin:24px 0 34px;color:#aeb9cc;font-size:17px;line-height:1.7}.start-btn{display:flex;align-items:center;gap:35px;padding:17px 24px 17px 30px;border-radius:12px;background:linear-gradient(110deg,#963cff,#286fff);box-shadow:0 0 35px #6845ff44;color:white;font-size:14px;font-weight:800;letter-spacing:2px;transition:.25s}.start-btn:hover{transform:translateY(-3px);box-shadow:0 0 45px #6845ff77}.start-btn b{font-size:24px;font-weight:400}.hint{margin-top:34px;color:#65738c;font-size:10px;letter-spacing:2px}.loading{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:6px}.loading span{width:5px;height:5px;border-radius:50%;background:#48caff;animation:pulse 1.2s infinite}.loading span:nth-child(2){animation-delay:.2s;background:#8e54ff}.loading span:nth-child(3){animation-delay:.4s;background:#d04dff}@keyframes pulse{50%{opacity:1;transform:scale(1)}}@media(max-width:600px){.logo{width:58px;height:58px;font-size:38px}.brand h1{font-size:34px;letter-spacing:6px}.brand p{font-size:8px}.intro h2{font-size:30px}.description{font-size:14px}.start-btn{padding:15px 24px}}
+.nexora-logo {
+    width: 420px;
+    max-width: 80vw;
+    height: auto;
+    display: block;
+    animation: logoAppear 1s ease-out;
+}
+
+@keyframes logoAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: nexora-ai-stock
+    env: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: oregon
+    envVars:
+      - key: FLASK_API_URL
+        value: http://127.0.0.1:5000
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASS
+        sync: false
+      - key: DB_NAME
+        sync: false
