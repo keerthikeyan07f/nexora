@@ -3,10 +3,115 @@
  * Application Master Frontend Script
  */
 
+const RUPEE_CONVERSION_RATE = 83;
+
+function formatPriceUSDINR(value) {
+  const usd = Number(value) || 0;
+  const inr = usd * RUPEE_CONVERSION_RATE;
+  return `$${usd.toFixed(2)} | ₹${inr.toFixed(2)}`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle();
   initSidebarMobile();
+  initBuySignalPopup();
 });
+
+function initBuySignalPopup() {
+  const buySignalState = {
+    shown: new Set(),
+    lastKey: ''
+  };
+
+  function parseNumericValue(text) {
+    if (!text) return null;
+    const match = text.match(/[-+]?\d*\.?\d+/);
+    return match ? Number(match[0]) : null;
+  }
+
+  function createToastContainer() {
+    const container = document.getElementById('nexora-buytoast-container');
+    if (container) return container;
+
+    const el = document.createElement('div');
+    el.id = 'nexora-buytoast-container';
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function showBuySignalToast(symbol, gainPct) {
+    const safeSymbol = (symbol || 'Selected stock').toUpperCase();
+    const message = `${safeSymbol} is gaining by ${gainPct >= 0 ? '+' : ''}${gainPct.toFixed(2)}%. This is a strong buying opportunity. Consider buying the stock now.`;
+
+    if (window.Notification && Notification.permission === 'granted') {
+      new Notification('Buy Signal', {
+        body: message,
+        tag: `nexora-${safeSymbol}`
+      });
+    }
+
+    const container = createToastContainer();
+    const toast = document.createElement('div');
+    toast.className = 'nexora-buytoast';
+    toast.innerHTML = `
+      <div class="toast-header-row">
+        <span class="toast-badge">BUY SIGNAL</span>
+        <span class="toast-close">×</span>
+      </div>
+      <div class="toast-title">${safeSymbol} is bullish</div>
+      <div class="toast-message">${message}</div>
+    `;
+
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn.addEventListener('click', () => toast.remove());
+
+    container.appendChild(toast);
+    setTimeout(() => toast.classList.add('show'), 50);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 5500);
+  }
+
+  function detectBuySignal() {
+    const symbolEl = document.getElementById('pSymbol');
+    const changeEl = document.getElementById('pChangePct');
+    const symbolText = symbolEl ? symbolEl.textContent.trim() : '';
+    const rawPct = changeEl ? changeEl.textContent.trim() : '';
+    const pctValue = parseNumericValue(rawPct);
+
+    if (!symbolText || pctValue === null || pctValue <= 1) return;
+
+    const key = `${symbolText}-${pctValue}`;
+    if (buySignalState.lastKey === key) return;
+
+    buySignalState.lastKey = key;
+    if (buySignalState.shown.has(symbolText)) return;
+
+    buySignalState.shown.add(symbolText);
+    showBuySignalToast(symbolText, pctValue);
+  }
+
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission().catch(() => {});
+  }
+
+  const signalTargets = [
+    document.getElementById('pSymbol'),
+    document.getElementById('pChangePct')
+  ].filter(Boolean);
+
+  if (signalTargets.length > 0) {
+    const observer = new MutationObserver(detectBuySignal);
+    signalTargets.forEach(target => observer.observe(target, {
+      childList: true,
+      characterData: true,
+      subtree: true
+    }));
+  }
+
+  detectBuySignal();
+}
 
 /**
  * Theme Manager System

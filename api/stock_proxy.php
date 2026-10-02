@@ -37,30 +37,33 @@ function generateHistoricalSeries($symbol, $period, $baseline) {
     }
     
     $basePrice = $baseline['base'];
-    $volatility = 0.018; // 1.8% daily volatility
+    $symbolSeed = abs(crc32($symbol . $period));
+    $symbolDrift = ((($symbolSeed % 2001) - 1000) / 1000) * 0.014; // stronger unique bias per symbol
+    $volatility = 0.010 + (($symbolSeed % 150) / 10000); // stronger difference between symbols
+    $phaseShift = (($symbolSeed % 17) / 17) * 0.012;
     
     $series = [];
-    $currentPrice = $basePrice * 0.85; // start lower for historical trend
+    $currentPrice = $basePrice * 0.85;
     $currentDate = new DateTime();
     $currentDate->modify("-$days days");
     
-    // Seed pseudo-random generator with symbol hash for deterministic realistic candles
-    mt_srand(crc32($symbol . $period));
+    mt_srand($symbolSeed);
 
     for ($i = 0; $i < $days; $i++) {
-        // Skip weekends
         $dayOfWeek = (int)$currentDate->format('N');
         if ($dayOfWeek >= 6) {
             $currentDate->modify('+1 day');
             continue;
         }
 
-        $pctChange = (mt_rand(-1000, 1050) / 100000); // Slight upward bias
+        $trendBias = $symbolDrift + $phaseShift + (($i / max(1, $days)) * 0.004);
+        $pctChange = (mt_rand(-1600, 1800) / 100000) + $trendBias;
+        $pctChange = max(-0.10, min(0.12, $pctChange));
         $open = $currentPrice;
         $close = $open * (1 + $pctChange);
-        $high = max($open, $close) * (1 + (mt_rand(1, 100) / 10000));
-        $low = min($open, $close) * (1 - (mt_rand(1, 100) / 10000));
-        $volume = (int)($baseline['vol'] * (mt_rand(70, 140) / 100));
+        $high = max($open, $close) * (1 + (mt_rand(1, 110) / 10000) + $volatility * 0.18);
+        $low = min($open, $close) * (1 - (mt_rand(1, 110) / 10000) - $volatility * 0.18);
+        $volume = (int)($baseline['vol'] * (mt_rand(65, 150) / 100));
 
         $series[] = [
             'date'  => $currentDate->format('Y-m-d'),

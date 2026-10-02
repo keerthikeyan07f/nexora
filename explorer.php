@@ -104,16 +104,16 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (data.status === 'success') {
           document.getElementById(`name-${sym}`).innerText = data.company_name;
-          document.getElementById(`price-${sym}`).innerText = `$${data.current_price.toFixed(2)}`;
+          document.getElementById(`price-${sym}`).innerText = formatPriceUSDINR(data.current_price);
           
           const changeEl = document.getElementById(`change-${sym}`);
           const sign = data.change >= 0 ? '+' : '';
           changeEl.innerText = `${sign}${data.change.toFixed(2)} (${data.change_pct}%)`;
           changeEl.className = data.change >= 0 ? 'badge-bullish fs-8' : 'badge-bearish fs-8';
 
-          document.getElementById(`open-${sym}`).innerText = `$${data.open.toFixed(2)}`;
-          document.getElementById(`high-${sym}`).innerText = `$${data.high.toFixed(2)}`;
-          document.getElementById(`low-${sym}`).innerText = `$${data.low.toFixed(2)}`;
+          document.getElementById(`open-${sym}`).innerText = formatPriceUSDINR(data.open);
+          document.getElementById(`high-${sym}`).innerText = formatPriceUSDINR(data.high);
+          document.getElementById(`low-${sym}`).innerText = formatPriceUSDINR(data.low);
           document.getElementById(`vol-${sym}`).innerText = (data.volume / 1000000).toFixed(1) + 'M';
         }
       });

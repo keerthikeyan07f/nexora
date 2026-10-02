@@ -49,7 +49,7 @@ $current_theme = get_user_theme();
         </a>
       <?php else: ?>
         <a href="auth/login.php" class="btn btn-outline-nexora">Sign In</a>
-        <a href="auth/register.php" class="btn btn-nexora">Get Started Free</a>
+        <a href="auth/register.php" class="btn btn-nexora">Get Started </a>
       <?php endif; ?>
     </div>
   </div>

@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(data => {
         if (data.status === 'success') {
           document.getElementById(`wName-${sym}`).innerText = data.company_name;
-          document.getElementById(`wPrice-${sym}`).innerText = `$${data.current_price.toFixed(2)}`;
+          document.getElementById(`wPrice-${sym}`).innerText = formatPriceUSDINR(data.current_price);
           
           const sign = data.change >= 0 ? '+' : '';
           const changeEl = document.getElementById(`wChange-${sym}`);

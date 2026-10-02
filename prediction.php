@@ -198,8 +198,8 @@ function executePrediction() {
     .then(res => res.json())
     .then(data => {
       if (data.status === 'success') {
-        document.getElementById('pCurPrice').innerText = `$${data.current_price.toFixed(2)}`;
-        document.getElementById('pPredPrice').innerText = `$${data.predicted_price.toFixed(2)}`;
+        document.getElementById('pCurPrice').innerText = formatPriceUSDINR(data.current_price);
+        document.getElementById('pPredPrice').innerText = formatPriceUSDINR(data.predicted_price);
         
         const sign = data.change_pct >= 0 ? '+' : '';
         const pctEl = document.getElementById('pChangePct');

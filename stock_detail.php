@@ -179,17 +179,17 @@ function fetchStockDetails(period) {
       if (data.status === 'success') {
         document.getElementById('detailCompanyName').innerText = data.company_name;
         document.getElementById('detailSector').innerText = data.sector;
-        document.getElementById('detailPrice').innerText = `$${data.current_price.toFixed(2)}`;
+        document.getElementById('detailPrice').innerText = formatPriceUSDINR(data.current_price);
         
         const sign = data.change >= 0 ? '+' : '';
         const changeEl = document.getElementById('detailChange');
         changeEl.innerText = `${sign}$${data.change.toFixed(2)} (${data.change_pct}%)`;
         changeEl.className = data.change >= 0 ? 'badge-bullish fs-6' : 'badge-bearish fs-6';
 
-        document.getElementById('dOpen').innerText = `$${data.open.toFixed(2)}`;
-        document.getElementById('dHigh').innerText = `$${data.high.toFixed(2)}`;
-        document.getElementById('dLow').innerText = `$${data.low.toFixed(2)}`;
-        document.getElementById('dPrevClose').innerText = `$${data.previous_close.toFixed(2)}`;
+        document.getElementById('dOpen').innerText = formatPriceUSDINR(data.open);
+        document.getElementById('dHigh').innerText = formatPriceUSDINR(data.high);
+        document.getElementById('dLow').innerText = formatPriceUSDINR(data.low);
+        document.getElementById('dPrevClose').innerText = formatPriceUSDINR(data.previous_close);
         document.getElementById('dVol').innerText = (data.volume / 1000000).toFixed(2) + 'M';
 
         rawHistoryData = data.history;

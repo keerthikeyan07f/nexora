@@ -234,8 +234,8 @@ function calculatePortfolioValuations() {
           grandTotalValue += mVal;
           grandTotalCost += cost;
 
-          document.getElementById(`curP-${h.symbol}`).innerText = `$${curPrice.toFixed(2)}`;
-          document.getElementById(`mVal-${h.symbol}`).innerText = `$${mVal.toFixed(2)}`;
+          document.getElementById(`curP-${h.symbol}`).innerText = formatPriceUSDINR(curPrice);
+          document.getElementById(`mVal-${h.symbol}`).innerText = formatPriceUSDINR(mVal);
 
           const plEl = document.getElementById(`pl-${h.symbol}`);
           const sign = pl >= 0 ? '+' : '';
@@ -248,8 +248,8 @@ function calculatePortfolioValuations() {
           const totalPL = grandTotalValue - grandTotalCost;
           const totalPLPct = grandTotalCost > 0 ? (totalPL / grandTotalCost) * 100 : 0;
 
-          document.getElementById('portTotalVal').innerText = `$${grandTotalValue.toFixed(2)}`;
-          document.getElementById('portTotalCost').innerText = `$${grandTotalCost.toFixed(2)}`;
+          document.getElementById('portTotalVal').innerText = formatPriceUSDINR(grandTotalValue);
+          document.getElementById('portTotalCost').innerText = formatPriceUSDINR(grandTotalCost);
           
           const grandPLEl = document.getElementById('portTotalPL');
           const grandPLPctEl = document.getElementById('portTotalPLPct');
